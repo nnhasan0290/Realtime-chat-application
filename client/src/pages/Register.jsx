@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {Link} from "react-router-dom";
 function Register() {
   return (
     <div>
@@ -13,13 +14,14 @@ function Register() {
           <input type="password" name="password" placeholder="password"/>
           <input type="password" name="confirmPassword" placeholder="confirm password"/>
           <button type="submit">Submit</button>
+          <span>Already have an account ? <Link to="/login">Login</Link></span>
         </form>
       </FormContainer>
     </div>
   );
 }
 const FormContainer = styled.div`
-  background-color: red;
+  background-color: dodgerblue;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,14 +40,25 @@ const FormContainer = styled.div`
     display: flex;
     align-items:center;
     justify-content: center;
+    gap: 1rem;
   }
   input{
     padding: 1rem;
     border-radius: 0.4rem;
     border: none;
+    font-size: 1rem;
+    width: 100%;
     &:focus{
       outline: none;
     }
+  }
+  button{
+    padding: 1rem;
+    border-radius: 0.4rem;
+    width: 100%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border: none;
   }
 
 `;
