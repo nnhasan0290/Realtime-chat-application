@@ -2,8 +2,10 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
-
+import { register_host } from "../utils/apiRoutes";
+console.log(register_host);
 function Register() {
   const [user, setUser] = useState({
     name: "",
@@ -11,13 +13,14 @@ function Register() {
     password: "",
     confirmPassword: "",
   });
-
-  console.log(user);
+  
 
   // methods ======================================
-  const submitHandle = (e) => {
+  const submitHandle = async(e) => {
     e.preventDefault();
     handleValidation();
+    const {data} = await axios.post(register_host, user);
+    console.log(data)
   };
 
   const handleValidation = () => {
