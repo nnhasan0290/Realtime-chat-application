@@ -1,32 +1,47 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { register_host } from "../utils/apiRoutes";
-console.log(register_host);
+
+
 function Register() {
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-  
 
   // methods ======================================
-  const submitHandle = async(e) => {
+  const submitHandle = async (e) => {
     e.preventDefault();
-    handleValidation();
-    const {data} = await axios.post(register_host, user);
-    console.log(data)
+    if (handleValidation()) {
+      const { name, email, password } = user;
+      const { data } = await axios.post(register_host, {
+        name,
+        email,
+        password,
+      });
+      if(data.success){
+         localStorage.setItem("user", JSON.stringify(data.user));
+         navigate("/");
+      }else{
+        toast.error("something wrong")
+      }
+    }
+
   };
 
   const handleValidation = () => {
     const { name, email, password, confirmPassword } = user;
     if (password !== confirmPassword || password.length < 8) {
-      toast.error("Password need to be matched and contained more than 7 characters");
+      toast.error(
+        "Password need to be matched and contained more than 7 characters"
+      );
       return false;
     } else if (name.length < 4) {
       toast.error("Name should contain at least 4 characters");
@@ -35,6 +50,7 @@ function Register() {
       toast.error("Email should contain at least 8 characters");
       return false;
     }
+    return true;
   };
 
   const handleChange = (e) => {
@@ -84,7 +100,7 @@ function Register() {
           </span>
         </form>
       </FormContainer>
-      <ToastContainer position= "bottom-right" />
+      <ToastContainer position="bottom-right" />
     </div>
   );
 }
